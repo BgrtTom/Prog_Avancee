@@ -9,7 +9,8 @@ public abstract class SemaphoreTP {
     public synchronized void syncWait(){
 	try {
 	    while(valeur<=0){
-		wait();
+		    wait();
+
         }
 	    valeur--;
 	} catch(InterruptedException e){}

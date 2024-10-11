@@ -9,60 +9,92 @@ class UnMobile extends JPanel implements Runnable
     final int sonPas = 10, sonCote=40;
 	int sonTemps;
 	boolean paused = false;
+    SemaphoreGeneralTP sem;
     
-    UnMobile(int telleLargeur, int telleHauteur)
+    UnMobile(int telleLargeur, int telleHauteur, int telleTemps,SemaphoreGeneralTP parSem)
     {
 	super();
 	saLargeur = telleLargeur;
 	saHauteur = telleHauteur;
-	sonTemps = sonTemps;
+	sonTemps = telleTemps;
+    sem = parSem;
 	setSize(telleLargeur, telleHauteur);
     }
 
     public void run()
     {
 	Thread th = new Thread(this);
-	for (sonDebDessin=0; sonDebDessin < saLargeur - 8*sonPas ; sonDebDessin+= sonPas)
+    while (true){
+	for (sonDebDessin=0; sonDebDessin < saLargeur/3 ; sonDebDessin+= sonPas)
 	    {
-
-		if (paused){
-			th.suspend();
-		}
 			repaint();
-		try{
-			Thread.sleep((int) (Math.random()*75));
-		}
+        try{Thread.sleep(sonTemps);}//(int) (Math.random()*75));}
 		catch (InterruptedException telleExcp)
 		    {telleExcp.printStackTrace();}
 	    }
 
-	for (sonDebDessin = saLargeur - sonCote; sonDebDessin > 0; sonDebDessin-= sonPas)
+    sem.syncWait();
+
+    for (sonDebDessin = saLargeur/3 ; sonDebDessin < 2*saLargeur/3; sonDebDessin+= sonPas)
+        {
+            repaint();
+            try{Thread.sleep(sonTemps);}//(int) (Math.random()*75));}
+            catch (InterruptedException telleExcp)
+            {telleExcp.printStackTrace();}
+        }
+    sem.syncSignal();
+    for (sonDebDessin = 2*saLargeur/3 ; sonDebDessin < saLargeur - sonCote; sonDebDessin+= sonPas)
+        {
+            repaint();
+            try{Thread.sleep(sonTemps);}//(int) (Math.random()*75));}
+            catch (InterruptedException telleExcp)
+            {telleExcp.printStackTrace();}
+        }
+
+
+	for (sonDebDessin = saLargeur - sonCote; sonDebDessin > 2*saLargeur/3; sonDebDessin-= sonPas)
 	{
-		if (paused){
-			th.suspend();
-		}
 		repaint();
-		try{Thread.sleep((int) (Math.random()*75));}
+        try{Thread.sleep(sonTemps);}//(int) (Math.random()*75));}
 		catch (InterruptedException telleExcp)
 		{telleExcp.printStackTrace();}
 	}
-	}
 
-
-    public void paintComponent(Graphics telCG)
+        sem.syncWait();
+    for (sonDebDessin = 2*saLargeur/3; sonDebDessin > saLargeur/3; sonDebDessin-= sonPas)
     {
-	super.paintComponent(telCG);
-	telCG.fillRect(sonDebDessin, saHauteur/2, sonCote, sonCote);
+        repaint();
+        try{Thread.sleep(sonTemps);}//(int) (Math.random()*75));}
+        catch (InterruptedException telleExcp)
+        {telleExcp.printStackTrace();}
+    }
+    sem.syncSignal();
+
+    for (sonDebDessin = saLargeur/3; sonDebDessin > 0; sonDebDessin-= sonPas)
+    {
+        repaint();
+        try{Thread.sleep(sonTemps);}//(int) (Math.random()*75));}
+        catch (InterruptedException telleExcp)
+        {telleExcp.printStackTrace();}
+    }
     }
 
-	public void suspend()
-	{
-		paused = true;
-	}
-	public void resume()
-	{
-		paused = false;
 	}
 
 
+    public void paintComponent(Graphics elem) {
+        super.paintComponent(elem);
+
+        if (sonDebDessin >= (saLargeur / 3) && sonDebDessin <= (saLargeur / 3 * 2)) {
+            elem.setColor(Color.RED);
+        } else {
+            elem.setColor(Color.LIGHT_GRAY);
+        }
+
+        elem.fillRect(sonDebDessin, saHauteur / 2, sonCote, sonCote);
+    }
 }
+
+
+
+

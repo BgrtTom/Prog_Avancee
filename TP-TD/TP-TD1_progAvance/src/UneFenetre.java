@@ -18,9 +18,9 @@ class UneFenetre extends JFrame
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-
+        SemaphoreGeneralTP sem = new SemaphoreGeneralTP(100);
         for (int i = 0; i < nbMobile; i++) {
-            TacheMobile = new UnMobile(LARG,HAUT/nbMobile);
+            TacheMobile = new UnMobile(LARG,HAUT/nbMobile,25, sem);
             leConteneur.add(TacheMobile);
 
             Thread SupportTache = new Thread (TacheMobile);

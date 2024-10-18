@@ -7,7 +7,7 @@ INFI-3
 
 </div>
 
-Ce rapport présente la compréhension des concepts abordés dans deux cours magistraux sur la **programmation répartie** (CM1) et la **gestion des threads et sections critiques** (CM2), ainsi que dans les **travaux pratiques** sur la gestion des **threads** en Java (TP1) et l'utilisation des **sémaphores** (TP2). 
+Ce rapport présente ma compréhension des concepts abordés dans les deux cours magistraux sur la **programmation répartie** (CM1) et la **gestion des threads et sections critiques** (CM2), ainsi que dans les **travaux pratiques** sur la gestion des **threads** en Java (TP1) et l'utilisation des **sémaphores** (TP2 et modification du TP1) et l'utilisation des moniteur (TP3). 
 
 Le but est de mettre en lumière l'importance de la programmation concurrente et parallèle, ainsi que leur lien avec les architectures.
 
@@ -40,6 +40,8 @@ Le **cycle de vie d'un thread** suit plusieurs états bien définis :
 
 ### Exemple dans le TP1 :
 Dans le TP, un mobile est animé grâce à un thread. Ce thread suit un cycle de vie : il est créé avec `new Thread()`, prêt avec `start()`, en exécution dans `run()`, et mis en veille périodiquement avec `sleep()` pour contrôler la vitesse de déplacement.
+
+Nous avons essayé de mettre en place un bouton qui permettait de stopper les mobiles en utilisant la méthode `suspend()`, qui permet de mettre en pause les threads et de les relancers en appuyant de nouveau sur sur ce même bouton pour appeler la méthode `resume()` pour remettre en exécution les threads. Mais je n'ai pas réussis à mettre en place cette fonctionnalité, car les méthodes `suspend()` et `resume()` sont obsolètes de la classe Thread en Java.
 
 ## 3. Sections Critiques et Synchronisation des Threads
 

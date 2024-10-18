@@ -92,7 +92,7 @@ TC.start();
 TD.start();
 ```
 
-Cela change leur état de **Nouveau** à **Prêt** (`Runnable`), signifiant qu'ils peuvent maintenant être exécutés par l'OS. L'OS décide quel thread sera exécuté en fonction de la priorité ou d'autres critères.
+Cela change leur état de **Nouveau** à **Prêt à être exécuté** (`Runnable`), signifiant qu'ils peuvent maintenant être exécutés par l'OS. L'OS décide quel thread sera exécuté en fonction de la priorité ou d'autres critères.
 
 ### Exécution des Threads
 
@@ -158,6 +158,33 @@ Lorsque le programme est exécuté plusieurs fois, l'ordre d'exécution des thre
 Dans ce programme, le **cycle de vie des threads** est contrôlé par un **sémaphore binaire**, qui assure la synchronisation des accès à la console pour l'affichage. Chaque thread passe par les étapes de création, exécution, blocage (si nécessaire), et terminaison, tandis que le sémaphore garantit qu’un seul thread à la fois accède à la ressource partagée.
 
 Le sémaphore permet d'éviter que les lettres ne soit afficher mélanger.  
+
+
+---
+
+### Gestion des Sections Critiques dans le Déplacement des Mobiles
+Dans la version du TP1 où nous avons ajouté une section critique sur la fenêtre à l'aide d'un sémaphore général, cela permet de créer une zone dans laquelle un nombre limité de mobiles peut se déplacer simultanément. Ce sémaphore général impose une limite sur le nombre de threads (ou de mobiles dans ce cas) pouvant entrer dans cette zone, assurant ainsi que seuls quelques mobiles y circulent à la fois.
+
+La section critique s'applique aux boucles gérant le déplacement des mobiles dans la zone centrale de la fenêtre. Étant donné que les mobiles effectuent un aller-retour, il est nécessaire de définir deux sections critiques distinctes : une pour la boucle qui gère l'aller, et une autre pour celle qui gère le retour.
+
+Remarque importante : bien que nous ayons deux sections critiques distinctes, elles utilisent le même sémaphore général pour gérer l'accès à la ressource partagée (la zone centrale de la fenêtre). Cela garantit qu'un nombre fixe de mobiles puisse être dans la zone à tout moment, que ce soit lors de l'aller ou du retour.
+
+---
+
+### Les Moniteurs et leur Fonctionnement
+Les moniteurs sont des mécanismes de synchronisation utilisés pour contrôler l'accès concurrent à des ressources partagées par plusieurs threads. Ils assurent deux fonctions principales :
+
+- **Exclusion Mutuelle** :
+Un moniteur garantit qu’un seul thread à la fois peut accéder à une section critique (une ressource partagée). Cela évite les conflits lorsqu’un thread modifie ou lit une donnée, empêchant les autres threads d’interférer pendant cette opération. En Java, cela est géré avec les méthodes synchronisées.
+
+- **Synchronisation Conditionnelle** :
+Les moniteurs permettent aux threads de se mettre en attente lorsqu'une condition n’est pas remplie, et de se réveiller lorsque cette condition change. Cela se fait avec les méthodes wait(), notify(), et notifyAll() :
+
+  - **wait()** met un thread en pause jusqu’à ce qu'une condition soit remplie.
+  - **notify()** réveille un thread en attente.
+  - **notifyAll()** réveille tous les threads bloqués sur une même condition.
+  
+Dans l'exercice 1 du TD3, un scénario de producteur/consommateur, le moniteur empêche le producteur et le consommateur d'accéder à la ressource partagée en même temps (exclusion mutuelle), dans le TD la lettre, et synchronise leur accès en fonction de l’état du buffer (le producteur attend si le buffer est plein, le consommateur attend s’il est vide).
 
 ---
 ## 5. Lien entre l’Architecture Matérielle et la Programmation Parallèle

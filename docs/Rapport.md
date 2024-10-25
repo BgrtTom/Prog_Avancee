@@ -64,13 +64,16 @@ Le verrou MUTEX doit suivre 4 principes fondamentales :
 - **Sémaphore** : Un sémaphore est un autre mécanisme de synchronisation, utile lorsqu'il y a plusieurs ressources à partager entre plusieurs threads. Un **sémaphore binaire** est équivalent à un MUTEX (1 ressource, 1 thread), tandis qu’un **sémaphore général** permet à un certain nombre de threads d'accéder simultanément à une ressource.
 
 ---
+<br><br><br>
+---
+
 ### Interprétation des cycles de vie et utilisation des sémaphores à travers le TP2 :
 
 ### 1. Cycle de Vie des Threads dans le TP2
 
 Les threads dans ce code sont gérés par la classe `Affichage`, qui hérite de la classe `Thread`. Voici une analyse détaillée des étapes du cycle de vie des threads.
 
-### Création des Threads
+#### Création des Threads
 
 Dans la classe `Main.java`, quatre objets de la classe `Affichage` sont créés. Chaque objet correspond à un thread.
 
@@ -83,7 +86,9 @@ Affichage TD = new Affichage("DDDDDD\n", sem);
 
 Chaque thread est dans l'état **Nouveau** (`New`) lors de sa création. À ce stade, ils ne sont pas encore prêts à être exécutés.
 
-### Lancement des Threads
+<br>
+
+#### Lancement des Threads
 
 Les threads sont démarrés en appelant la méthode `start()` :
 
@@ -96,7 +101,9 @@ TD.start();
 
 Cela change leur état de **Nouveau** à **Prêt à être exécuté** (`Runnable`), signifiant qu'ils peuvent maintenant être exécutés par l'OS. L'OS décide quel thread sera exécuté en fonction de la priorité ou d'autres critères.
 
-### Exécution des Threads
+<br>
+
+#### Exécution des Threads
 
 Une fois qu’un thread est choisi par le planificateur, sa méthode `run()` est appelée. Voici les étapes principales :
 
@@ -106,20 +113,27 @@ Une fois qu’un thread est choisi par le planificateur, sa méthode `run()` est
 
 À ce stade, le thread est dans l'état **En Exécution** (`Running`). 
 
-### Blocage et Attente
+<br>
+
+#### Blocage et Attente
 
 Si un autre thread tente d'acquérir le sémaphore pendant qu'un thread est en exécution, il est bloqué et passe à l'état **En Attente** (`Blocked`). Cela se produit lorsque la méthode `wait()` est appelée dans `syncWait()`. Le thread reste bloqué jusqu'à ce que le sémaphore soit libéré.
 
-### Terminaison des Threads
+<br>
+
+#### Terminaison des Threads
 
 Après avoir terminé l'exécution de la méthode `run()`, le thread passe à l'état **Mort** (`Terminated`). À ce stade, il ne peut plus être relancé.
 
+<br>
 
-## 2. Fonctionnement des Sémaphores dans le TP2
+### 2. Fonctionnement des Sémaphores dans le TP2
 
 Le **sémaphore binaire** dans ce programme est implémenté dans la classe `SemaphoreTPBin`. Son rôle est de gérer l'accès à la ressource partagée (la console pour l'affichage). Voici comment il fonctionne.
 
-### Initialisation du Sémaphore
+<br>
+
+#### Initialisation du Sémaphore
 
 Le sémaphore est initialisé avec une valeur de 1, ce qui signifie qu’un seul thread peut accéder à la ressource à la fois :
 
@@ -127,7 +141,9 @@ Le sémaphore est initialisé avec une valeur de 1, ce qui signifie qu’un seul
 SemaphoreTPBin sem = new SemaphoreTPBin(1);
 ```
 
-### Acquisition du Sémaphore : `syncWait()`
+<br>
+
+#### Obtention du Sémaphore : `syncWait()`
 
 Chaque thread appelle `sem.syncWait()` pour tenter d'acquérir le sémaphore avant d'entrer dans la section critique.
 
@@ -140,7 +156,9 @@ sem.syncWait();
 
 Cette approche garantit une **exclusion mutuelle**, permettant à un seul thread d’accéder à la ressource à la fois.
 
-### Libération du Sémaphore : `syncSignal()`
+<br>
+
+#### Libération du Sémaphore : `syncSignal()`
 
 Après avoir terminé son exécution dans la section critique, le thread appelle `syncSignal()` pour libérer la ressource :
 
@@ -151,17 +169,22 @@ sem.syncSignal();
 - La valeur du sémaphore est réinitialisée à 1, signalant que la ressource est libre.
 - La méthode `notify()` réveille un thread bloqué qui attendait la libération du sémaphore. Ce thread peut alors entrer dans la section critique.
 
-### Pourquoi les threads ne sont-ils pas exécutés dans le même ordre à chaque exécution ?
+<br>
+
+#### Pourquoi les threads ne sont-ils pas exécutés dans le même ordre à chaque exécution ?
 
 Lorsque le programme est exécuté plusieurs fois, l'ordre d'exécution des threads varie en raison du fonctionnement du système d'exploitation (OS) qui gère le planificateur de threads. Ce planificateur détermine l’ordre d’exécution des threads en fonction de son algorithmes d'éléctions, et n'est donc pas déterministe. 
 
-## 3. Conclusion
+<br>
+
+### 3. Résumé du TP
 
 Dans ce programme, le **cycle de vie des threads** est contrôlé par un **sémaphore binaire**, qui assure la synchronisation des accès à la console pour l'affichage. Chaque thread passe par les étapes de création, exécution, blocage (si nécessaire), et terminaison, tandis que le sémaphore garantit qu’un seul thread à la fois accède à la ressource partagée (la boucle d'affichage).
 
 Le sémaphore permet d'éviter que les lettres ne soit afficher mélanger.  
 
-
+---
+<br><br><br>
 ---
 
 ### Gestion des Sections Critiques dans le Déplacement des Mobiles
@@ -171,6 +194,8 @@ La section critique s'applique aux boucles gérant le déplacement des mobiles d
 
 Remarque importante : bien que nous ayons deux sections critiques distinctes, elles utilisent le même sémaphore général pour gérer l'accès à la ressource partagée (la zone centrale de la fenêtre). Cela garantit qu'un nombre fixe de mobiles puisse être dans la zone à tout moment, que ce soit lors de l'aller ou du retour.
 
+---
+<br><br><br>
 ---
 
 ### Les Moniteurs et leur Fonctionnement
@@ -201,6 +226,8 @@ Avec `ArrayBlockingQueue`, les actions de mise en attente et de reprise des thre
 
 L’API Concurrente de Java simplifie la synchronisation multi-thread en automatisant l'exclusion mutuelle et la gestion de l’attente via des structures comme `BlockingQueue`. Dans des scénarios de producteur-consommateur, comme celui de la boulangerie, cela permet une gestion des ressources partagées plus sûre et plus lisible, tout en réduisant le code de synchronisation nécessaire.
 
+---
+<br><br><br>
 ---
 
 ## 5. Lien entre l’Architecture Matérielle et la Programmation Parallèle

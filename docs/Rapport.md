@@ -7,17 +7,20 @@ INFI-3
 
 </div>
 
-Ce rapport présente ma compréhension des concepts abordés dans les deux cours magistraux sur la **programmation répartie** (CM1) et la **gestion des threads et sections critiques** (CM2), ainsi que dans les **travaux pratiques** sur la gestion des **threads** en Java (TP1) et l'utilisation des **sémaphores** (TP2 et modification du TP1) et l'utilisation des moniteur (TP3). 
+Ce rapport a été rédigé avec l'assistance de l'IA ChatGPT pour mettre en forme mes idées, les fautes d'orthographe ont été corrigés à l'aide du site Scribens : https://www.scribens.fr.
 
-Le but est de présenter ma compréhension de la programmation concurrente et parallèle, ainsi que leur lien avec les architectures.
+
+Le rapport présente ma compréhension des concepts abordés dans les deux cours magistraux sur la **programmation répartie** (CM1) et la **gestion des threads et sections critiques** (CM2), ainsi que dans les **travaux pratiques** sur la gestion des **threads** en Java (TP1) et l'utilisation des **sémaphores** (TP2 et modification du TP1) et l'utilisation des moniteur (TP3). 
+
+Ainsi le but est de présenter ma compréhension de la programmation concurrente et parallèle, ainsi que leur lien avec les architectures.
 
 ## 1. Compréhension des Concepts
 
 ### 1.1. Processus, Tâche, Thread
 
-- **Processus** : Un processus est le support d'exécution d'une tâche c'est à dire une unitée autonome qui exécute une tâche spécifique. Il possède ses propres ressources (mémoire, registres, etc.) et est isolé des autres processus. Dans un environnement multitâches, plusieurs processus peuvent être exécutés simultanément, mais chacun est indépendant.
+- **Processus** : Un processus est le support d'exécution d'une tâche c'est à dire une unité autonome qui exécute une tâche spécifique. Il possède ses propres ressources (mémoire, registres, etc.) et est isolé des autres processus. Dans un environnement multitâches, plusieurs processus peuvent être exécutés simultanément, mais chacun est indépendant.
   
-- **Tâche** : Une tâche représente une unitée de travail ou une opération spécifique effectuée par un processus. Dans le cadre de la **programmation parallèle**, une tâche peut être exécutée indépendamment des autres, permettant de traiter plusieurs opérations en même temps.
+- **Tâche** : Une tâche représente une unité de travail ou une opération spécifique effectuée par un processus. Dans le cadre de la **programmation parallèle**, une tâche peut être exécutée indépendamment des autres, permettant de traiter plusieurs opérations en même temps.
 
 - **Thread** : Un **thread** est une subdivision d’un processus (Processus léger). Les threads partagent la même mémoire et les mêmes ressources du processus, ce qui permet une communication rapide entre eux, mais cela impose également une gestion stricte des accès concurrents pour éviter les conflits. Les threads sont utilisés pour gérer plusieurs tâches en parallèle au sein d’un même processus.
 
